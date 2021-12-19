@@ -1,0 +1,4 @@
+src/__pycache__
+.idea
+src/data/archive
+.DS_Store
