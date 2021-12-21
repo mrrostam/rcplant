@@ -1,32 +1,23 @@
-import enum
-from _dataset import Dataset
-from _dataset import SpectrumType
+from ._dataset import *
+from ._enums import *
+import numpy as np
 
-data_sets = {
+DATA_SETS = {
     SpectrumType.FTIR: Dataset.create(SpectrumType.FTIR),
     SpectrumType.Raman: Dataset.create(SpectrumType.Raman)
 }
 
 
-class Plastic(enum.Enum):
-    HDPE = 'HDPE'
-    LDPE = 'LDPE'
-    PP = 'PP'
-    PS = 'PS'
-    PC = 'PC'
-    PVC = 'PVC'
-    Polyester = 'Polyester'
-    PET = 'PET'
-    PU = 'PU'
-
-
 class Material(object):
-    def __init__(self, plastic_type):
+    def __init__(self, plastic_type: Plastic):
+        if not isinstance(plastic_type, Plastic):
+            raise ValueError(f'Invalid type of plastic for a Container: {plastic_type} \n '
+                             f'Supported plastic types: {[e.value for e in Plastic]}')
         self._plastic_type = plastic_type
         self._spectrum = {
-            SpectrumType.FTIR: data_sets[SpectrumType.FTIR].get().loc[self._plastic_type.value].sample(),
-            SpectrumType.Raman: data_sets[SpectrumType.Raman].get().loc[self._plastic_type.value].sample()
+            SpectrumType.FTIR: DATA_SETS[SpectrumType.FTIR].get().loc[self._plastic_type.value].sample().iloc[0],
+            SpectrumType.Raman: DATA_SETS[SpectrumType.Raman].get().loc[self._plastic_type.value].sample().iloc[0]
         }
 
-    def spectrum(self, type: SpectrumType):
-        return self._spectrum[type]
+    def spectrum(self, spectrum_type: SpectrumType):
+        return self._spectrum[spectrum_type]

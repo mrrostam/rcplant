@@ -1,2 +1,4 @@
-from _simulation import RPSimulation
-from _material import Plastic
+from ._conveyor import Conveyor
+from ._enums import *
+from ._sensor import Sensor
+from ._simulation import RPSimulation
