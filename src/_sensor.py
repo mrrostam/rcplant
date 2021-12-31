@@ -1,11 +1,12 @@
 import enum
 import uuid
 
-from ._enums import SpectrumType
-from ._material import DATA_SETS
 from ._container import Container
 from ._enums import SimulationMode
+from ._enums import SpectrumType
+from ._material import DATA_SETS
 
+# TODO: these should be dynamically scaled
 NOISE_MU_VALUE = 0
 NOISE_SIGMA_VALUE = 0.1
 
@@ -19,6 +20,7 @@ class Sensor:
             raise ValueError(f'Invalid type of sensor: {SpectrumType} \n '
                              f'Supported sensors types: {[e.value for e in SpectrumType]}')
         self._sensor_type = sensor_type
+        self._background_spectrum = DATA_SETS[self._sensor_type].background
         self._guid = uuid.uuid4()
 
     @property
@@ -35,7 +37,7 @@ class Sensor:
 
     def read(self, container: Container, mode: SimulationMode):
         if container is None:
-            raw_output = DATA_SETS[self._sensor_type].background
+            raw_output = self._background_spectrum
         else:
             raw_output = container.material.spectrum(self._sensor_type)
 

@@ -8,7 +8,7 @@ def user_sorting_function(sensors_output):
     # decision = {}
 
     # random identification
-    # print(sensors_output)
+    print(sensors_output)
     decision = {guid: random.choice(list(Plastic)) for (guid, value) in sensors_output.items()}
     # for key, value in sensors_output.items():
     #     if value['spectrum'] != 0:
@@ -30,6 +30,9 @@ def main():
         Sensor(sensing_zone_location_1, SpectrumType.FTIR),
         Sensor(sensing_zone_location_2, SpectrumType.Raman),
     ]
+
+    for index, sensor in enumerate(sensors):
+        print(f'The unique ID for sensor[{index}]: {sensor.guid}')
 
     conveyor = Conveyor(conveyor_speed, conveyor_length)
 

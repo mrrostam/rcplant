@@ -6,7 +6,7 @@ setup(
     url='',
     license='',
     author='Mohammadreza Rostam, Rongxuan Du',
-    author_email='reza.rostam@mech.ubc.ca, Rongxuan Du',
+    author_email='reza.rostam@mech.ubc.ca',
     description='Recycling Plant Simulator',
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -17,5 +17,5 @@ setup(
     ],
     packages=find_packages(),
     python_requires='>=3.8',
-    install_requires=["matplotlib>=3.3.3", "pandas>=1.3.4", "tabulate>=0.8.9", "openpyxl>=3.0.9"]
+    install_requires=["matplotlib>=3.3.3", "pandas>=1.3.4", "tabulate>=0.8.9", "openpyxl>=3.0.9", "numpy>=1.21.5"]
 )
