@@ -2,8 +2,8 @@ import enum
 import uuid
 
 from ._container import Container
-from ._enums import SimulationMode
-from ._enums import SpectrumType
+from ._types import SimulationMode
+from ._types import SpectrumType
 from ._material import DATA_SETS
 
 # TODO: these should be dynamically scaled

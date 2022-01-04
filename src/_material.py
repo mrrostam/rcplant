@@ -1,5 +1,5 @@
 from ._dataset import *
-from ._enums import *
+from ._types import *
 import numpy as np
 
 DATA_SETS = {

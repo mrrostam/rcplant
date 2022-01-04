@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 
-from ._enums import SpectrumType
+from ._types import SpectrumType
 
 
 class Dataset(object):

@@ -4,40 +4,33 @@ from typing import List
 
 from ._container import *
 from ._conveyor import *
-from ._enums import SimulationMode
 from ._sensor import *
-
-DEFAULT_CONVEYOR_POSITION = 1000
-DEFAULT_CONVEYOR_SPEED = 1
-DEFAULT_SENSOR_POSITION = 500
+from ._types import SimulationMode
 
 MIN_CONTAINER_WIDTH = 5
 MAX_CONTAINER_WIDTH = 15
 
 
 class RecyclingPlant:
-    def __init__(self, sorting_function, conveyor: Conveyor = None, sensors: List[Sensor] = None, mode=None):
+    def __init__(self, sorting_function, num_containers: int, conveyor: Conveyor, sensors: List[Sensor], mode=None):
         if not isinstance(sorting_function, types.FunctionType):
-            raise ValueError(f'Invalid sorting function, please passl a compatible function')
+            raise ValueError(f'Invalid sorting function, please pass a compatible function')
 
         if not any(mode == simulation_mode.value for simulation_mode in SimulationMode):
             raise ValueError(f'Invalid simulation mode , \n'
                              f'valid options: {[mode.value for mode in SimulationMode]}')
 
-        self._user_sorting_function = sorting_function
-        self._mode = mode
-
         if conveyor is None:
-            self._conveyor = Conveyor(DEFAULT_CONVEYOR_SPEED, DEFAULT_CONVEYOR_POSITION)
-        else:
-            self._conveyor = conveyor
+            raise ValueError(f'No conveyor is passed')
 
         if sensors is None:
-            self._sensors = [
-                Sensor(DEFAULT_SENSOR_POSITION, SpectrumType.FTIR),
-            ]
-        else:
-            self._sensors = sensors
+            raise ValueError(f'No Sensor list is passed')
+
+        self._user_sorting_function = sorting_function
+        self._mode = mode
+        self._conveyor = conveyor
+        self._sensors = sensors
+        self._num_containers = num_containers
 
         self._containers_list = []
 
@@ -48,14 +41,19 @@ class RecyclingPlant:
     def _add_container(self, plastic_type: Plastic, dimension: int):
         self._containers_list.append(Container(plastic_type, dimension))
 
-    def update(self, time_step_sec: float, generate_container: bool):
+    def update(
+            self,
+            current_iteration: int,
+            simulation_frequency_hz: int,
+            sensors_frequency_hz: int):
         missed = 0
         classified = 0
         mistyped = 0
         sensors_output = {}
         sensed_containers = {}
 
-        for sensor in self._sensors:  # init sensor_output with the background spectrum
+        # init sensor_output with the background spectrum
+        for sensor in self._sensors:
             sensors_output.update(
                 {
                     sensor.guid: {
@@ -66,6 +64,7 @@ class RecyclingPlant:
                 }
             )
 
+        time_step_sec = 1 / simulation_frequency_hz
         for container in self._containers_list:
             container.location += time_step_sec * self._conveyor.speed
             if container.location >= self._conveyor.length:
@@ -89,15 +88,18 @@ class RecyclingPlant:
                     )
 
         # generating new containers
-        if random.random() > 0.5 and generate_container:
+        if random.random() > 0.5 and self._num_containers != 0:
             if not self._containers_list or (
                     self._containers_list[-1].location - self._containers_list[-1].dimension) > 0:
                 self._add_container(
                     random.choice(list(Plastic)),
                     random.randint(MIN_CONTAINER_WIDTH, MAX_CONTAINER_WIDTH)
                 )
+                self._num_containers -= 1
 
-        identification_output = self._user_sorting_function(sensors_output)
+        identification_output = None
+        if current_iteration % (simulation_frequency_hz // sensors_frequency_hz) == 0:
+            identification_output = self._user_sorting_function(sensors_output)
 
         if identification_output is not None:
             for sensor_guid, plastic_type in identification_output.items():
@@ -108,4 +110,5 @@ class RecyclingPlant:
                         mistyped += 1
                     self._containers_list.remove(sensed_containers[sensor_guid])
 
-        return missed, classified, mistyped
+        is_done = self._num_containers == 0 and len(self._containers_list) == 0
+        return missed, classified, mistyped, is_done

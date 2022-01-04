@@ -14,7 +14,7 @@ class Container:
 
         self._plastic_type = plastic_type
         self._material = Material(plastic_type)
-        # TODO: change dimension to support 2d as well
+        # TODO: change dimension type to support 2d as well
         self._dimension_cm = dimension_cm
         self._location_cm = 0
         self._guid = uuid.uuid4()

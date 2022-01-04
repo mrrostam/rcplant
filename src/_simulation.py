@@ -1,25 +1,37 @@
-from ._enums import SimulationMode
+from ._types import SimulationMode
 from ._recycling_plant import *
 
-DEFAULT_TIME_STEP_SEC = 0.1
+SIMULATION_FREQUENCY_HZ = 10
+VALID_SENSORS_FREQUENCIES_HZ = [10, 5, 2, 1]
 
 
 class RPSimulation:
     def __init__(
             self,
             sorting_function,
-            final_time_min: int,
-            sensors: Sensor = None,
-            conveyor: Conveyor = None,
+            num_containers: int,
+            sensors: List[Sensor],
+            sampling_frequency: int,
+            conveyor: Conveyor,
             mode='training'
     ):
         if not any(mode == simulation_mode.value for simulation_mode in SimulationMode):
             raise ValueError(f'Invalid simulation mode,\n'
                              f'valid options: {[mode.value for mode in SimulationMode]}')
 
-        self._time_step_sec = DEFAULT_TIME_STEP_SEC
-        self._final_time_sec = final_time_min * 60
-        self._recycling_plant = RecyclingPlant(sorting_function, conveyor, sensors, mode)
+        if sampling_frequency not in VALID_SENSORS_FREQUENCIES_HZ:
+            raise ValueError(f'Invalid sampling frequency,\n'
+                             f'valid options: {[frequency for frequency in VALID_FREQUENCIES]}')
+
+        self._simulation_frequency_hz = SIMULATION_FREQUENCY_HZ
+        self._sensors_frequency_hz = sampling_frequency
+        self._current_iteration = 0
+        self._recycling_plant = RecyclingPlant(
+            sorting_function,
+            num_containers,
+            conveyor,
+            sensors,
+            mode)
         self._total_missed = 0
         self._total_classified = 0
         self._total_mistyped = 0
@@ -36,14 +48,18 @@ class RPSimulation:
     def total_mistyped(self):
         return self._total_mistyped
 
-    def update(self, generate_container=True):
-        missed, classified, mistyped = self._recycling_plant.update(self._time_step_sec, generate_container)
+    def update(self):
+        missed, classified, mistyped, is_done = self._recycling_plant.update(
+            self._current_iteration,
+            self._simulation_frequency_hz,
+            self._sensors_frequency_hz
+        )
+        self._current_iteration += 1
         self._total_missed += missed
         self._total_classified += classified
         self._total_mistyped += mistyped
+        return is_done
 
     def run(self):
-        for time in range(0, int(self._final_time_sec // self._time_step_sec)):
-            self.update()
-        for time in range(0, int(self._final_time_sec // self._time_step_sec)):
-            self.update(False)
+        while not self.update():
+            pass
