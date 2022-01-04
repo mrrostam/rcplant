@@ -63,3 +63,4 @@ class RPSimulation:
     def run(self):
         while not self.update():
             pass
+        return self._current_iteration * (1 / self._simulation_frequency_hz)

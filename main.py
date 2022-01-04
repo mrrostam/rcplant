@@ -19,9 +19,11 @@ def user_sorting_function(sensors_output):
 
 
 def main():
+
+    # simulation parameters
     conveyor_length = 1000  # cm
     conveyor_speed = 10  # cm per second
-    num_containers = 1000
+    num_containers = 100
     sensing_zone_location_1 = 500  # cm
     sensing_zone_location_2 = 600  # cm
     sensors_sampling_frequency = 2  # Hz
@@ -46,11 +48,13 @@ def main():
         mode=simulation_mode
     )
 
-    simulator.run()
+    elapsed_time = simulator.run()
 
     print(f'\nTotal missed containers = {simulator.total_missed}')
     print(f'Total sorted containers = {simulator.total_classified}')
     print(f'Total mistyped containers = {simulator.total_mistyped}')
+
+    print(f'\n{num_containers} containers are processed in {elapsed_time:.2f} seconds')
 
 
 if __name__ == '__main__':

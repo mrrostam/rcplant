@@ -7,8 +7,8 @@ from ._conveyor import *
 from ._sensor import *
 from ._types import SimulationMode
 
-MIN_CONTAINER_WIDTH = 5
-MAX_CONTAINER_WIDTH = 15
+MIN_CONTAINER_SIZE = 5
+MAX_CONTAINER_SIZE = 15
 
 
 class RecyclingPlant:
@@ -36,9 +36,9 @@ class RecyclingPlant:
 
     @staticmethod
     def _is_visible_to_sensor(sensor: Sensor, container: Container):
-        return container.location > sensor.location > (container.location - container.dimension)
+        return container.location.x > sensor.location > (container.location.x - container.dimension.length)
 
-    def _add_container(self, plastic_type: Plastic, dimension: int):
+    def _add_container(self, plastic_type: Plastic, dimension: ContainerDimension):
         self._containers_list.append(Container(plastic_type, dimension))
 
     def update(
@@ -66,8 +66,8 @@ class RecyclingPlant:
 
         time_step_sec = 1 / simulation_frequency_hz
         for container in self._containers_list:
-            container.location += time_step_sec * self._conveyor.speed
-            if container.location >= self._conveyor.length:
+            container.location.x += time_step_sec * self._conveyor.speed
+            if container.location.x >= self._conveyor.length:
                 self._containers_list.remove(container)
                 missed += 1  # container reached the end of the conveyor
             for sensor in self._sensors:
@@ -87,13 +87,16 @@ class RecyclingPlant:
                         }
                     )
 
-        # generating new containers
         if random.random() > 0.5 and self._num_containers != 0:
             if not self._containers_list or (
-                    self._containers_list[-1].location - self._containers_list[-1].dimension) > 0:
+                    self._containers_list[-1].location.x - self._containers_list[-1].dimension.length) > 0:
                 self._add_container(
                     random.choice(list(Plastic)),
-                    random.randint(MIN_CONTAINER_WIDTH, MAX_CONTAINER_WIDTH)
+                    ContainerDimension(
+                        random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
+                        random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
+                        random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
+                    )
                 )
                 self._num_containers -= 1
 
