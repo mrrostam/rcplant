@@ -1,14 +1,16 @@
 import enum
 import uuid
 
+import numpy as np
+
 from ._container import Container
+from ._material import DATA_SETS
 from ._types import SimulationMode
 from ._types import SpectrumType
-from ._material import DATA_SETS
 
-# TODO: these should be dynamically scaled
+SNR_DB = 20
 NOISE_MU_VALUE = 0
-NOISE_SIGMA_VALUE = 0.1
+EPSILON_POWER = 0.0001
 
 
 class Sensor:
@@ -44,7 +46,17 @@ class Sensor:
         if mode == SimulationMode.Training.value:
             return raw_output
         elif mode == SimulationMode.Testing.value:
-            noise = np.random.normal(NOISE_MU_VALUE, NOISE_SIGMA_VALUE, raw_output.size)
+            signal_power = raw_output ** 2
+            signal_average_power = np.mean(signal_power)
+            signal_average_power_db = 10 * np.log10(signal_average_power + EPSILON_POWER)
+            noise_average_power_db = signal_average_power_db - SNR_DB
+            noise_average_power = 10 ** (noise_average_power_db / 10)
+            noise = np.random.normal(NOISE_MU_VALUE, np.sqrt(noise_average_power), raw_output.size)
+            if raw_output.name != 'background':
+                print(noise)
+                print(raw_output)
+                print(raw_output + noise)
+                input()
             return raw_output + noise
         else:
             raise ValueError(f'Invalid reading mode,\n'

@@ -12,7 +12,7 @@ MAX_CONTAINER_SIZE = 15
 
 
 class RecyclingPlant:
-    def __init__(self, sorting_function, num_containers: int, conveyor: Conveyor, sensors: List[Sensor], mode=None):
+    def __init__(self, sorting_function, num_containers: int, conveyor: Conveyor, sensors: List[Sensor], mode):
         if not isinstance(sorting_function, types.FunctionType):
             raise ValueError(f'Invalid sorting function, please pass a compatible function')
 
