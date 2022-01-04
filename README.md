@@ -164,5 +164,3 @@ An enum for all types of sensors
 ## TODO:
 
 - Add real values for the background spectrum to the dataset files instead of `zeros`
-- Add sampling time (frequency) to sensors
-- A better way to handle input containers and generating new ones
