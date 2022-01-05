@@ -1,7 +1,6 @@
 # Recycling Plant Simulator Package
 
-This project is structured as a standalone package so that it can easily be installed using `pip`. However, it's not
-released anywhere yet.
+This project is structured as a standalone package so that it can easily be installed using `pip`. However, it's not released anywhere yet.
 
 ## Setup
 
@@ -31,8 +30,7 @@ or
 python3 main.py
 ```
 
-You may modify the [`user_sorting_function`](src/main.py) function and implement your logic for sorting plastic
-containers.
+You may modify the [`user_sorting_function`](src/main.py) function and implement new logic for sorting plastic containers.
 
 ## API
 
@@ -45,9 +43,11 @@ class RPSimulation:
     def __init__(
             self,
             sorting_function,
-            final_time_min,
-            sensors=None,
-            conveyor=None
+            num_containers: int,
+            sensors: List[Sensor],
+            sampling_frequency: int,
+            conveyor: Conveyor,
+            mode
     )
 ```
 
@@ -55,11 +55,12 @@ A manager class for the recycling plant simulator.
 
 ##### Input parameters:
 
-- [sorting_function](#sorting_function) : A user-defined function that gets the output of the sensors and identifies the type of plastic, based on the given spectrum.
-- final_time_min : Duration of the simulation [minutes].
-- sensors : An array of [Sensors](#sensor).
-- conveyor : A user-defined [Conveyor](#conveyor) system.
-
+- [sorting_function](#sorting_function) : A user-defined function that gets the [output of the sensors](#) and identifies the type of [plastic](#plastic), based on the given spectrum.
+- num_containers : Number of input containers needed to be sorted.
+- sensors : An array of [sensors](#sensor).
+- sampling_frequency: The sampling frequency of sensors. Acceptable values: 10, 5, 2, and 1 Hz.
+- conveyor : A user-defined [conveyor](#conveyor) system.
+- mode: A selector to run the simulation in either `training` or `testing` configuration.
 ---
 
 #### RPSimulation.`run`
@@ -68,13 +69,15 @@ A manager class for the recycling plant simulator.
 def run(self)
 ```
 
-A function to run the simulation and output the results
+A function to run the simulation
 
 ##### Outputs:
+- RPSimulation.`total_missed` : Number of missed containers.
+- RPSimulation.`classified` : Number of classified containers.
+- RPSimulation.`mistyped` : Number of containers classified incorrectly.
 
-- missed : Number of missed containers.
-- classified : Number of classified containers.
-- mistyped : Number of containers classified incorrectly.
+##### Returns:
+- Amount of time required to process all containers [seconds].
 
 ---
 
@@ -82,7 +85,7 @@ A function to run the simulation and output the results
 
 ```python
 class Sensor:
-    def __init__(self, location_cm, sensor_type)
+    def __init__(self, location_cm: int, sensor_type: SpectrumType)
 ```
 
 A class to define a new sensor
@@ -98,7 +101,7 @@ A class to define a new sensor
 
 ```python
 class Conveyor:
-    def __init__(self, speed_cm_per_second, length_cm)
+    def __init__(self, speed_cm_per_second: int, length_cm: int)
 ```
 
 A class to define a new conveyor
@@ -110,18 +113,27 @@ A class to define a new conveyor
 
 ---
 
-#### sorting_function
+#### Sorting_function
 
 ```python
 def sorting_function(sensors_output)
 ```
 
-A user-defined function that identifies the type of plastic, based on the given
-spectrum.
+A user-defined function that identifies the type of plastic, based on the given spectrum.
 
 ##### Input parameters:
 
-- sensors_output : An array containing all available types of spectrum for the detected container.
+- sensors_output : A dictionary with sensors information. The keys are the global unique identifier of each sensors.
+
+```python
+{
+    sensor.guid: {
+        'type': sensor.type,
+        'location_cm': sensor.location,
+        'spectrum': sensor.read(None, self._mode),
+    }
+}
+```
 
 ##### Return value:
 

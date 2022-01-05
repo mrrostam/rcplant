@@ -1,5 +1,5 @@
-from ._types import SimulationMode
 from ._recycling_plant import *
+from ._types import SimulationMode
 
 SIMULATION_FREQUENCY_HZ = 10
 VALID_SENSORS_FREQUENCIES_HZ = [10, 5, 2, 1]
@@ -13,7 +13,7 @@ class RPSimulation:
             sensors: List[Sensor],
             sampling_frequency: int,
             conveyor: Conveyor,
-            mode='training'
+            mode
     ):
         if not any(mode == simulation_mode.value for simulation_mode in SimulationMode):
             raise ValueError(f'Invalid simulation mode,\n'

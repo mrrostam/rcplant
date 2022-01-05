@@ -13,8 +13,13 @@ NOISE_MU_VALUE = 0
 EPSILON_POWER = 0.0001
 
 
+# Factory method
+def sensor_create(sensor_type: SpectrumType, location: int):
+    return Sensor(sensor_type, location)
+
+
 class Sensor:
-    def __init__(self, location_cm: int, sensor_type: SpectrumType):
+    def __init__(self, sensor_type: SpectrumType, location_cm: int):
         if location_cm < 0:
             raise ValueError(f'Sensor location should be >= 0.')
         self._location_cm = location_cm
@@ -52,11 +57,6 @@ class Sensor:
             noise_average_power_db = signal_average_power_db - SNR_DB
             noise_average_power = 10 ** (noise_average_power_db / 10)
             noise = np.random.normal(NOISE_MU_VALUE, np.sqrt(noise_average_power), raw_output.size)
-            if raw_output.name != 'background':
-                print(noise)
-                print(raw_output)
-                print(raw_output + noise)
-                input()
             return raw_output + noise
         else:
             raise ValueError(f'Invalid reading mode,\n'

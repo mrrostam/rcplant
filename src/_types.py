@@ -56,6 +56,13 @@ class ContainerLocation:
 
 class ContainerDimension:
     def __init__(self, length, width, height):
+        if length <= 0:
+            raise ValueError(f'Invalid value for length: {length}; should be > 0.')
+        if width <= 0:
+            raise ValueError(f'Invalid value for width: {width}; should be > 0.')
+        if height <= 0:
+            raise ValueError(f'Invalid value for height: {height}; should be > 0.')
+
         self._length = length
         self._width = width
         self._height = height
@@ -74,12 +81,48 @@ class ContainerDimension:
 
     @length.setter
     def length(self, new_length):
+        if new_length <= 0:
+            raise ValueError(f'Invalid value for length: {new_length}; should be > 0.')
         self._length = new_length
 
     @width.setter
     def width(self, new_width):
+        if new_width <= 0:
+            raise ValueError(f'Invalid value for width: {new_width}; should be > 0.')
         self._width = new_width
 
     @height.setter
     def height(self, new_height):
+        if new_height <= 0:
+            raise ValueError(f'Invalid value for height: {new_height}; should be > 0.')
         self._height = new_height
+
+
+class ConveyorDimension:
+    def __init__(self, length, width):
+        if length <= 0:
+            raise ValueError(f'Invalid value for length: {length}; should be > 0.')
+        if width <= 0:
+            raise ValueError(f'Invalid value for width: {width}; should be > 0.')
+        self._length = length
+        self._width = width
+
+    @property
+    def length(self):
+        return self._length
+
+    @property
+    def width(self):
+        return self._width
+
+    @length.setter
+    def length(self, new_length):
+        if new_length <= 0:
+            raise ValueError(f'Invalid value for length: {new_length}; should be > 0.')
+        self._length = new_length
+
+    @width.setter
+    def width(self, new_width):
+        if new_width <= 0:
+            raise ValueError(f'Invalid value for width: {new_width}; should be > 0.')
+        self._width = new_width

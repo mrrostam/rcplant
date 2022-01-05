@@ -1,17 +1,24 @@
 import uuid
 
+from ._types import *
+
+
+# Factory method
+def conveyor_create(speed_cm_per_second: int, length: int, width: int):
+    return Container(speed_cm_per_second, ConveyorDimension(length, width))
+
 
 class Conveyor:
-    def __init__(self, speed_cm_per_second: int, length_cm: int):
+    def __init__(self, speed_cm_per_second: int, dimension: ConveyorDimension):
         if speed_cm_per_second < 0:
             raise ValueError(f'Invalid speed: {speed_cm_per_second}'
                              f'Conveyor speed should be >= 0 cm per second.')
-        if length_cm < 0:
-            raise ValueError(f'Invalid length: {length_cm}'
-                             f'Conveyor length should be >= 0 cm.')
+
+        if not isinstance(dimension, ConveyorDimension):
+            raise ValueError(f'Invalid type of dimension for a conveyor: {dimension}')
 
         self._speed_cm_per_second = speed_cm_per_second
-        self._length_cm = length_cm
+        self._dimension = dimension
         self._guid = uuid.uuid4()
 
     @property
@@ -19,8 +26,8 @@ class Conveyor:
         return self._speed_cm_per_second
 
     @property
-    def length(self):
-        return self._length_cm
+    def dimension(self):
+        return self._dimension
 
     @property
     def guid(self):
@@ -31,5 +38,5 @@ class Conveyor:
         if speed_cm_per_second < 0:
             raise ValueError(f'Invalid speed: {speed_cm_per_second} \n'
                              f'Conveyor speed should be >= 0 cm per second.')
-        
+
         self._speed_cm_per_second = speed_cm_per_second

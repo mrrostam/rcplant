@@ -67,7 +67,7 @@ class RecyclingPlant:
         time_step_sec = 1 / simulation_frequency_hz
         for container in self._containers_list:
             container.location.x += time_step_sec * self._conveyor.speed
-            if container.location.x >= self._conveyor.length:
+            if container.location.x >= self._conveyor.dimension.length:
                 self._containers_list.remove(container)
                 missed += 1  # container reached the end of the conveyor
             for sensor in self._sensors:
