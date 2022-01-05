@@ -58,7 +58,7 @@ A manager class for the recycling plant simulator.
 - [sorting_function](#sorting_function) : A user-defined function that gets the [output of the sensors](#) and identifies the type of [plastic](#plastic), based on the given spectrum.
 - num_containers : Number of input containers needed to be sorted.
 - sensors : An array of [sensors](#sensor).
-- sampling_frequency: The sampling frequency of sensors. Acceptable values: 10, 5, 2, and 1 Hz.
+- sampling_frequency: The sampling frequency of sensors. Acceptable values: 10, 5, 2, and 1 Hz. In `testing` mode, increasing the sampling frequency increases added noise to spectrum.
 - conveyor : A user-defined [conveyor](#conveyor) system.
 - mode: A selector to run the simulation in either `training` or `testing` configuration.
 ---
@@ -69,7 +69,7 @@ A manager class for the recycling plant simulator.
 def run(self)
 ```
 
-A function to run the simulation
+A function to run the simulation.
 
 ##### Outputs:
 - RPSimulation.`total_missed` : Number of missed containers.
@@ -85,7 +85,7 @@ A function to run the simulation
 
 ```python
 class Sensor:
-    def __init__(self, location_cm: int, sensor_type: SpectrumType)
+    def __init__(self, sensor_type: SpectrumType, location_cm: int)
 ```
 
 A class to define a new sensor
@@ -97,11 +97,29 @@ A class to define a new sensor
 
 ---
 
+#### Sensor.`create`
+
+```python
+def create(cls, sensor_type: SpectrumType, location: int)
+```
+
+A factory method to create a new [sensor](#sensor).
+
+##### Input parameters:
+
+- location_cm : Location of the sensor [centimeter].
+- sensor_type : Type of the sensor [[SpectrumType](#spectrumtype)].
+
+##### Returns
+- A [sensor](#sensor) object.
+
+---
+
 #### Conveyor
 
 ```python
 class Conveyor:
-    def __init__(self, speed_cm_per_second: int, length_cm: int)
+    def __init__(self, speed_cm_per_second: int, dimension:ConveyorDimension)
 ```
 
 A class to define a new conveyor
@@ -109,7 +127,25 @@ A class to define a new conveyor
 ##### Input parameters:
 
 - speed_cm_per_second : Speed of the conveyor [centimeter per second].
-- length_cm : The length of the conveyor [centimeter].
+- dimension : Dimensions of the conveyor in centimeter.
+---
+
+#### Conveyor.`create`
+
+```python
+def create(cls, speed_cm_per_second: int, length: int, width: int)
+```
+
+A factory method to create a new [conveyor](#conveyor).
+
+##### Input parameters:
+
+- speed_cm_per_second : Speed of the conveyor [centimeter per second].
+- length : Length of the conveyor in centimeter.
+- width : Width of the conveyor in centimeter.
+
+##### Returns
+- A [conveyor](#conveyor) object.
 
 ---
 

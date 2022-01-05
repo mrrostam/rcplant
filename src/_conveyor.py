@@ -1,11 +1,6 @@
 import uuid
 
-from ._types import *
-
-
-# Factory method
-def conveyor_create(speed_cm_per_second: int, length: int, width: int):
-    return Container(speed_cm_per_second, ConveyorDimension(length, width))
+from ._types import ConveyorDimension
 
 
 class Conveyor:
@@ -20,6 +15,10 @@ class Conveyor:
         self._speed_cm_per_second = speed_cm_per_second
         self._dimension = dimension
         self._guid = uuid.uuid4()
+
+    @classmethod
+    def create(cls, speed_cm_per_second: int, length: int, width: int):
+        return Conveyor(speed_cm_per_second, ConveyorDimension(length, width))
 
     @property
     def speed(self):

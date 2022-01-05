@@ -1,16 +1,11 @@
 import uuid
 
 from ._material import *
-from ._types import *
+from ._types import ContainerDimension, Plastic
 
 INIT_X = 0
 INIT_Y = 0
 INIT_Z = 0
-
-
-# Factory method
-def container_create(plastic_type: Plastic, length: int, width: int, height: int):
-    return Container(plastic_type, ContainerDimension(length, width, height))
 
 
 class Container:
@@ -27,6 +22,10 @@ class Container:
         self._dimension = dimension
         self._location = ContainerLocation(INIT_X, INIT_Y, INIT_Z)
         self._guid = uuid.uuid4()
+
+    @classmethod
+    def create(cls, plastic_type: Plastic, length: int, width: int, height: int):
+        return Container(plastic_type, ContainerDimension(length, width, height))
 
     @property
     def material(self):

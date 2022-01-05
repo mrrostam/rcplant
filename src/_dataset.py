@@ -1,11 +1,17 @@
 import os
+
 import pandas as pd
-import numpy as np
 
 from ._types import SpectrumType
 
 
 class Dataset(object):
+
+    def background(self):
+        pass
+
+    def get(self):
+        pass
 
     @classmethod
     def create(cls, dataset_type):

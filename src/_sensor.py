@@ -8,14 +8,14 @@ from ._material import DATA_SETS
 from ._types import SimulationMode
 from ._types import SpectrumType
 
-SNR_DB = 20
+SAMPLING_FREQUENCY_TO_SNR_DB = {
+    1: 5,
+    2: 10,
+    5: 25,
+    10: 50,
+}
 NOISE_MU_VALUE = 0
 EPSILON_POWER = 0.0001
-
-
-# Factory method
-def sensor_create(sensor_type: SpectrumType, location: int):
-    return Sensor(sensor_type, location)
 
 
 class Sensor:
@@ -30,6 +30,10 @@ class Sensor:
         self._background_spectrum = DATA_SETS[self._sensor_type].background
         self._guid = uuid.uuid4()
 
+    @classmethod
+    def create(cls, sensor_type: SpectrumType, location: int):
+        return Sensor(sensor_type, location)
+
     @property
     def location(self):
         return self._location_cm
@@ -42,7 +46,7 @@ class Sensor:
     def guid(self):
         return self._guid.hex
 
-    def read(self, container: Container, mode: SimulationMode):
+    def read(self, container: Container, mode: SimulationMode, sampling_frequency: int):
         if container is None:
             raw_output = self._background_spectrum
         else:
@@ -54,7 +58,7 @@ class Sensor:
             signal_power = raw_output ** 2
             signal_average_power = np.mean(signal_power)
             signal_average_power_db = 10 * np.log10(signal_average_power + EPSILON_POWER)
-            noise_average_power_db = signal_average_power_db - SNR_DB
+            noise_average_power_db = signal_average_power_db - SAMPLING_FREQUENCY_TO_SNR_DB[sampling_frequency]
             noise_average_power = 10 ** (noise_average_power_db / 10)
             noise = np.random.normal(NOISE_MU_VALUE, np.sqrt(noise_average_power), raw_output.size)
             return raw_output + noise

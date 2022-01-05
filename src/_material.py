@@ -1,6 +1,5 @@
 from ._dataset import *
 from ._types import *
-import numpy as np
 
 DATA_SETS = {
     SpectrumType.FTIR: Dataset.create(SpectrumType.FTIR),

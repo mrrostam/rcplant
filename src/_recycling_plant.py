@@ -10,6 +10,8 @@ from ._types import SimulationMode
 MIN_CONTAINER_SIZE = 5
 MAX_CONTAINER_SIZE = 15
 
+CONTAINERS_GAP = 5
+
 
 class RecyclingPlant:
     def __init__(self, sorting_function, num_containers: int, conveyor: Conveyor, sensors: List[Sensor], mode):
@@ -33,6 +35,9 @@ class RecyclingPlant:
         self._num_containers = num_containers
 
         self._containers_list = []
+
+        if self._mode == 'training':
+            random.seed(1)
 
     @staticmethod
     def _is_visible_to_sensor(sensor: Sensor, container: Container):
@@ -59,7 +64,7 @@ class RecyclingPlant:
                     sensor.guid: {
                         'type': sensor.type,
                         'location_cm': sensor.location,
-                        'spectrum': sensor.read(None, self._mode),
+                        'spectrum': sensor.read(None, self._mode, sensors_frequency_hz),
                     }
                 }
             )
@@ -77,7 +82,7 @@ class RecyclingPlant:
                             sensor.guid: {
                                 'type': sensor.type,
                                 'location_cm': sensor.location,
-                                'spectrum': sensor.read(container, self._mode),
+                                'spectrum': sensor.read(container, self._mode, sensors_frequency_hz),
                             }
                         }
                     )
@@ -87,9 +92,9 @@ class RecyclingPlant:
                         }
                     )
 
-        if random.random() > 0.5 and self._num_containers != 0:
+        if self._num_containers != 0:
             if not self._containers_list or (
-                    self._containers_list[-1].location.x - self._containers_list[-1].dimension.length) > 0:
+                    self._containers_list[-1].location.x - self._containers_list[-1].dimension.length) > CONTAINERS_GAP:
                 self._add_container(
                     random.choice(list(Plastic)),
                     ContainerDimension(
