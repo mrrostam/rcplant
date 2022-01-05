@@ -164,9 +164,9 @@ A user-defined function that identifies the type of plastic, based on the given 
 ```python
 {
     sensor.guid: {
-        'type': sensor.type,
-        'location_cm': sensor.location,
-        'spectrum': sensor.read(None, self._mode),
+        'type': type,
+        'location_cm': location,
+        'spectrum': spectrum,
     }
 }
 ```
