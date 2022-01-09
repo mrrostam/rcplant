@@ -3,19 +3,11 @@ import uuid
 
 import numpy as np
 
+from ._constants import *
 from ._container import Container
 from ._material import DATA_SETS
 from ._types import SimulationMode
 from ._types import SpectrumType
-
-SAMPLING_FREQUENCY_TO_SNR_DB = {
-    1: 50,
-    2: 25,
-    5: 10,
-    10: 5,
-}
-NOISE_MU_VALUE = 0
-EPSILON_POWER = 0.0001
 
 
 class Sensor:

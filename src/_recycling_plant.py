@@ -2,23 +2,21 @@ import random
 import types
 from typing import List
 
+from ._constants import *
 from ._container import *
 from ._conveyor import *
 from ._sensor import *
 from ._types import SimulationMode
 
-MIN_CONTAINER_SIZE = 5
-MAX_CONTAINER_SIZE = 15
-
-INIT_CONTAINER_X = 0
-INIT_CONTAINER_Y = 0
-INIT_CONTAINER_Z = 0
-
-CONTAINERS_GAP = 5
-
 
 class RecyclingPlant:
-    def __init__(self, sorting_function, num_containers: int, conveyor: Conveyor, sensors: List[Sensor], mode):
+    def __init__(
+            self,
+            sorting_function,
+            num_containers: int,
+            conveyor: Conveyor,
+            sensors: List[Sensor],
+            mode):
         if not isinstance(sorting_function, types.FunctionType):
             raise ValueError(f'Invalid sorting function, please pass a compatible function')
 
@@ -30,7 +28,7 @@ class RecyclingPlant:
             raise ValueError(f'No conveyor is passed')
 
         if sensors is None:
-            raise ValueError(f'No Sensor list is passed')
+            raise ValueError(f'No sensor list is passed')
 
         self._user_sorting_function = sorting_function
         self._mode = mode
@@ -98,7 +96,7 @@ class RecyclingPlant:
 
         if self._num_containers != 0:
             if not self._containers_list or (
-                    self._containers_list[-1].location.y - self._containers_list[-1].dimension.length) > CONTAINERS_GAP:
+                    self._containers_list[-1].location.y - self._containers_list[-1].dimension.length) > MIN_CONTAINERS_GAP:
                 self._add_container(
                     random.choice(list(Plastic)),
                     ContainerDimension(

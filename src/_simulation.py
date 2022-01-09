@@ -1,8 +1,6 @@
+from ._constants import *
 from ._recycling_plant import *
 from ._types import SimulationMode
-
-SIMULATION_FREQUENCY_HZ = 10
-VALID_SENSORS_FREQUENCIES_HZ = [10, 5, 2, 1]
 
 
 class RPSimulation:
