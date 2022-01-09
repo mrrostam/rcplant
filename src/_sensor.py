@@ -9,10 +9,10 @@ from ._types import SimulationMode
 from ._types import SpectrumType
 
 SAMPLING_FREQUENCY_TO_SNR_DB = {
-    1: 5,
-    2: 10,
-    5: 25,
-    10: 50,
+    1: 50,
+    2: 25,
+    5: 10,
+    10: 5,
 }
 NOISE_MU_VALUE = 0
 EPSILON_POWER = 0.0001

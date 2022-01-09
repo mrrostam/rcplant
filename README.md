@@ -212,3 +212,5 @@ An enum for all types of sensors
 ## TODO:
 
 - Add real values for the background spectrum to the dataset files instead of `zeros`
+- Implement simple 2D sensors
+- Implement simple actuators
