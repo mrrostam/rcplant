@@ -10,6 +10,10 @@ from ._types import SimulationMode
 MIN_CONTAINER_SIZE = 5
 MAX_CONTAINER_SIZE = 15
 
+INIT_CONTAINER_X = 0
+INIT_CONTAINER_Y = 0
+INIT_CONTAINER_Z = 0
+
 CONTAINERS_GAP = 5
 
 
@@ -41,10 +45,10 @@ class RecyclingPlant:
 
     @staticmethod
     def _is_visible_to_sensor(sensor: Sensor, container: Container):
-        return container.location.x > sensor.location > (container.location.x - container.dimension.length)
+        return container.location.y > sensor.location > (container.location.y - container.dimension.length)
 
-    def _add_container(self, plastic_type: Plastic, dimension: ContainerDimension):
-        self._containers_list.append(Container(plastic_type, dimension))
+    def _add_container(self, plastic_type: Plastic, dimension: ContainerDimension, location: ContainerLocation):
+        self._containers_list.append(Container(plastic_type, dimension, location))
 
     def update(
             self,
@@ -71,8 +75,8 @@ class RecyclingPlant:
 
         time_step_sec = 1 / simulation_frequency_hz
         for container in self._containers_list:
-            container.location.x += time_step_sec * self._conveyor.speed
-            if container.location.x >= self._conveyor.dimension.length:
+            container.location.y += time_step_sec * self._conveyor.speed
+            if container.location.y >= self._conveyor.dimension.length:
                 self._containers_list.remove(container)
                 missed += 1  # container reached the end of the conveyor
             for sensor in self._sensors:
@@ -94,14 +98,15 @@ class RecyclingPlant:
 
         if self._num_containers != 0:
             if not self._containers_list or (
-                    self._containers_list[-1].location.x - self._containers_list[-1].dimension.length) > CONTAINERS_GAP:
+                    self._containers_list[-1].location.y - self._containers_list[-1].dimension.length) > CONTAINERS_GAP:
                 self._add_container(
                     random.choice(list(Plastic)),
                     ContainerDimension(
                         random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
                         random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
                         random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
-                    )
+                    ),
+                    ContainerLocation(INIT_CONTAINER_X, INIT_CONTAINER_Y, INIT_CONTAINER_Z)
                 )
                 self._num_containers -= 1
 

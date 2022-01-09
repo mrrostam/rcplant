@@ -3,13 +3,9 @@ import uuid
 from ._material import *
 from ._types import ContainerDimension, Plastic
 
-INIT_X = 0
-INIT_Y = 0
-INIT_Z = 0
-
 
 class Container:
-    def __init__(self, plastic_type: Plastic, dimension: ContainerDimension):
+    def __init__(self, plastic_type: Plastic, dimension: ContainerDimension, location: ContainerLocation):
         if not isinstance(plastic_type, Plastic):
             raise ValueError(f'Invalid type of plastic for a Container: {plastic_type} \n '
                              f'Supported plastic types: {[e.value for e in Plastic]}')
@@ -20,7 +16,7 @@ class Container:
         self._plastic_type = plastic_type
         self._material = Material(plastic_type)
         self._dimension = dimension
-        self._location = ContainerLocation(INIT_X, INIT_Y, INIT_Z)
+        self._location = location
         self._guid = uuid.uuid4()
 
     @classmethod
