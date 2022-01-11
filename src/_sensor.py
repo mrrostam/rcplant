@@ -38,7 +38,7 @@ class Sensor:
     def guid(self):
         return self._guid.hex
 
-    def read(self, container: Container, mode: SimulationMode, sampling_frequency: int):
+    def read(self, container: Container, mode: str, sampling_frequency: int):
         if container is None:
             raw_output = self._background_spectrum
         else:

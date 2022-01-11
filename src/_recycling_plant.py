@@ -45,21 +45,24 @@ class RecyclingPlant:
     def _is_visible_to_sensor(sensor: Sensor, container: Container):
         return container.location.y > sensor.location > (container.location.y - container.dimension.length)
 
-    def _add_container(self, plastic_type: Plastic, dimension: ContainerDimension, location: ContainerLocation):
-        self._containers_list.append(Container(plastic_type, dimension, location))
-
     def _generate_container(self):
         if not self._containers_list or\
                 (self._containers_list[-1].location.y - self._containers_list[-1].dimension.length) > \
                 random.randint(MIN_CONTAINERS_GAP, MAX_CONTAINERS_GAP):
-            self._add_container(
-                random.choice(list(Plastic)),
-                ContainerDimension(
-                    random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
-                    random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
-                    random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
-                ),
-                ContainerLocation(INIT_CONTAINER_X, INIT_CONTAINER_Y, INIT_CONTAINER_Z)
+            self._containers_list.append(
+                Container(
+                    random.choice(list(Plastic)),
+                    ContainerDimension(
+                        random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
+                        random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
+                        random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
+                    ),
+                    ContainerLocation(
+                        INIT_CONTAINER_X,
+                        INIT_CONTAINER_Y,
+                        INIT_CONTAINER_Z
+                    )
+                )
             )
             self._num_remaining_containers -= 1
 
@@ -68,6 +71,7 @@ class RecyclingPlant:
             current_iteration: int,
             simulation_frequency_hz: int,
             sensors_frequency_hz: int):
+
         missed = 0
         classified = 0
         mistyped = 0
@@ -80,7 +84,7 @@ class RecyclingPlant:
                 {
                     sensor.guid: {
                         'type': sensor.type,
-                        'location_cm': sensor.location,
+                        'location': sensor.location,
                         'spectrum': sensor.read(None, self._mode, sensors_frequency_hz),
                     }
                 }
@@ -98,7 +102,7 @@ class RecyclingPlant:
                         {
                             sensor.guid: {
                                 'type': sensor.type,
-                                'location_cm': sensor.location,
+                                'location': sensor.location,
                                 'spectrum': sensor.read(container, self._mode, sensors_frequency_hz),
                             }
                         }

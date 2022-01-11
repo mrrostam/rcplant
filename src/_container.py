@@ -21,7 +21,11 @@ class Container:
 
     @classmethod
     def create(cls, plastic_type: Plastic, length: int, width: int, height: int):
-        return Container(plastic_type, ContainerDimension(length, width, height))
+        return Container(
+            plastic_type,
+            ContainerDimension(length, width, height),
+            ContainerLocation(0, 0, 0)
+        )
 
     @property
     def material(self):

@@ -18,7 +18,10 @@ class Conveyor:
 
     @classmethod
     def create(cls, speed_cm_per_second: int, length: int, width: int):
-        return Conveyor(speed_cm_per_second, ConveyorDimension(length, width))
+        return Conveyor(
+            speed_cm_per_second,
+            ConveyorDimension(length, width)
+        )
 
     @property
     def speed(self):

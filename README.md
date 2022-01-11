@@ -165,7 +165,7 @@ A user-defined function that identifies the type of plastic, based on the given 
 {
     sensor.guid: {
         'type': type,
-        'location_cm': location,
+        'location': location,
         'spectrum': spectrum,
     }
 }
