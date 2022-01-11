@@ -47,7 +47,7 @@ class RPSimulation:
             sensors: List[Sensor],
             sampling_frequency: int,
             conveyor: Conveyor,
-            mode
+            mode: string
     )
 ```
 

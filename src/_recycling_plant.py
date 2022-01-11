@@ -16,7 +16,7 @@ class RecyclingPlant:
             num_containers: int,
             conveyor: Conveyor,
             sensors: List[Sensor],
-            mode):
+            mode: str):
         if not isinstance(sorting_function, types.FunctionType):
             raise ValueError(f'Invalid sorting function, please pass a compatible function')
 
@@ -34,7 +34,7 @@ class RecyclingPlant:
         self._mode = mode
         self._conveyor = conveyor
         self._sensors = sensors
-        self._num_containers = num_containers
+        self._num_remaining_containers = num_containers
 
         self._containers_list = []
 
@@ -47,6 +47,21 @@ class RecyclingPlant:
 
     def _add_container(self, plastic_type: Plastic, dimension: ContainerDimension, location: ContainerLocation):
         self._containers_list.append(Container(plastic_type, dimension, location))
+
+    def _generate_container(self):
+        if not self._containers_list or\
+                (self._containers_list[-1].location.y - self._containers_list[-1].dimension.length) > \
+                random.randint(MIN_CONTAINERS_GAP, MAX_CONTAINERS_GAP):
+            self._add_container(
+                random.choice(list(Plastic)),
+                ContainerDimension(
+                    random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
+                    random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
+                    random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
+                ),
+                ContainerLocation(INIT_CONTAINER_X, INIT_CONTAINER_Y, INIT_CONTAINER_Z)
+            )
+            self._num_remaining_containers -= 1
 
     def update(
             self,
@@ -94,19 +109,8 @@ class RecyclingPlant:
                         }
                     )
 
-        if self._num_containers != 0:
-            if not self._containers_list or (
-                    self._containers_list[-1].location.y - self._containers_list[-1].dimension.length) > MIN_CONTAINERS_GAP:
-                self._add_container(
-                    random.choice(list(Plastic)),
-                    ContainerDimension(
-                        random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
-                        random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
-                        random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
-                    ),
-                    ContainerLocation(INIT_CONTAINER_X, INIT_CONTAINER_Y, INIT_CONTAINER_Z)
-                )
-                self._num_containers -= 1
+        if self._num_remaining_containers != 0:
+            self._generate_container()
 
         identification_output = None
         if current_iteration % (simulation_frequency_hz // sensors_frequency_hz) == 0:
@@ -121,5 +125,5 @@ class RecyclingPlant:
                         mistyped += 1
                     self._containers_list.remove(sensed_containers[sensor_guid])
 
-        is_done = self._num_containers == 0 and len(self._containers_list) == 0
+        is_done = self._num_remaining_containers == 0 and len(self._containers_list) == 0
         return missed, classified, mistyped, is_done

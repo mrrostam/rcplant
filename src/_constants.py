@@ -1,4 +1,4 @@
-# upper and lower bound in cm
+# upper and lower bounds in cm
 MIN_CONTAINER_SIZE = 5
 MAX_CONTAINER_SIZE = 15
 
@@ -7,11 +7,12 @@ INIT_CONTAINER_X = 0
 INIT_CONTAINER_Y = 0
 INIT_CONTAINER_Z = 0
 
-# min gap between generated containers in cm
+# upper and lower bounds for the gap between generated containers in cm
 MIN_CONTAINERS_GAP = 5
+MAX_CONTAINERS_GAP = 20
 
 SIMULATION_FREQUENCY_HZ = 10
-VALID_SENSORS_FREQUENCIES_HZ = [10, 5, 2, 1]  # divisor of the simulation freq
+VALID_SENSORS_FREQUENCIES_HZ = [10, 5, 2, 1]  # divisors of SIMULATION_FREQUENCY_HZ
 
 SAMPLING_FREQUENCY_TO_SNR_DB = {freq: 50 // freq for freq in VALID_SENSORS_FREQUENCIES_HZ}
 
