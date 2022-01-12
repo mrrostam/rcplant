@@ -82,7 +82,7 @@ class RecyclingPlant:
         for sensor in self._sensors:
             sensors_output.update(
                 {
-                    sensor.guid: {
+                    sensor.no: {
                         'type': sensor.type,
                         'location': sensor.location,
                         'spectrum': sensor.read(None, self._mode, sensors_frequency_hz),

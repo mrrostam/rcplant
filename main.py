@@ -27,9 +27,6 @@ def main():
         Sensor.create(SpectrumType.Raman, sensing_zone_location_2),
     ]
 
-    for index, sensor in enumerate(sensors):
-        print(f'The unique ID for sensor[{index}]: {sensor.guid}')
-
     conveyor = Conveyor.create(conveyor_speed, conveyor_length, conveyor_width)
 
     simulator = RPSimulation(
