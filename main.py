@@ -5,7 +5,9 @@ from src import *  # This import should be replaced with `import rcplant`
 
 def user_sorting_function(sensors_output):
     # random identification
-    decision = {guid: random.choice(list(Plastic)) for (guid, value) in sensors_output.items()}
+    print(sensors_output)
+    input()
+    decision = {sensor_id: random.choice(list(Plastic)) for (sensor_id, value) in sensors_output.items()}
 
     return decision
 
