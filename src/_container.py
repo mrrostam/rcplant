@@ -1,7 +1,7 @@
 import uuid
 
 from ._material import *
-from ._types import ContainerDimension, Plastic
+from ._types import *
 
 
 class Container:
