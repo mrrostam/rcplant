@@ -47,7 +47,7 @@ class RPSimulation:
             sensors: List[Sensor],
             sampling_frequency: int,
             conveyor: Conveyor,
-            mode: string
+            mode: str
     )
 ```
 
@@ -88,7 +88,7 @@ class Sensor:
     def __init__(self, sensor_type: SpectrumType, location_cm: int)
 ```
 
-A class to define a new sensor
+A class to define a new sensor.
 
 ##### Input parameters:
 
@@ -107,7 +107,7 @@ A factory method to create a new [sensor](#sensor).
 
 ##### Input parameters:
 
-- location_cm : Location of the sensor [centimeter].
+- location : Location of the sensor [centimeter].
 - sensor_type : Type of the sensor [[SpectrumType](#spectrumtype)].
 
 ##### Returns
@@ -122,7 +122,7 @@ class Conveyor:
     def __init__(self, speed_cm_per_second: int, dimension:ConveyorDimension)
 ```
 
-A class to define a new conveyor
+A class to define a new conveyor.
 
 ##### Input parameters:
 
@@ -159,11 +159,11 @@ A user-defined function that identifies the type of plastic, based on the given 
 
 ##### Input parameters:
 
-- sensors_output : A dictionary with sensors information. The keys are the global unique identifier of each sensors.
+- sensors_output : A dictionary with sensors information. The keys are the id of each sensor.
 
 ```python
 {
-    sensor.guid: {
+    sensor.id: {
         'type': type,
         'location': location,
         'spectrum': spectrum,
@@ -173,7 +173,12 @@ A user-defined function that identifies the type of plastic, based on the given 
 
 ##### Return value:
 
-- plastic_type: [[Plastic](#plastic)]
+- plastic_type dict: [Plastic](#plastic)
+```python
+decision = {
+    sensor_id: plastic_type
+}
+```
 
 ---
 
