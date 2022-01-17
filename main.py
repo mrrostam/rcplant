@@ -5,7 +5,7 @@ from src import *  # This import should be replaced with `import rcplant`
 
 def user_sorting_function(sensors_output):
     # random identification
-    decision = {guid: random.choice(list(Plastic)) for (guid, value) in sensors_output.items()}
+    decision = {sensor_id: random.choice(list(Plastic)) for (sensor_id, value) in sensors_output.items()}
 
     return decision
 
@@ -26,9 +26,6 @@ def main():
         Sensor.create(SpectrumType.FTIR, sensing_zone_location_1),
         Sensor.create(SpectrumType.Raman, sensing_zone_location_2),
     ]
-
-    for index, sensor in enumerate(sensors):
-        print(f'The unique ID for sensor[{index}]: {sensor.guid}')
 
     conveyor = Conveyor.create(conveyor_speed, conveyor_length, conveyor_width)
 

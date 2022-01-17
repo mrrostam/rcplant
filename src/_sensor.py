@@ -1,5 +1,4 @@
 import enum
-import uuid
 
 import numpy as np
 
@@ -11,16 +10,19 @@ from ._types import SpectrumType
 
 
 class Sensor:
+    _num_sensors = 0
+
     def __init__(self, sensor_type: SpectrumType, location_cm: int):
         if location_cm < 0:
             raise ValueError(f'Sensor location should be >= 0.')
-        self._location_cm = location_cm
         if not isinstance(sensor_type, SpectrumType):
             raise ValueError(f'Invalid type of sensor: {SpectrumType} \n '
                              f'Supported sensors types: {[e.value for e in SpectrumType]}')
+        Sensor._num_sensors += 1
+        self._location_cm = location_cm
         self._sensor_type = sensor_type
         self._background_spectrum = DATA_SETS[self._sensor_type].background
-        self._guid = uuid.uuid4()
+        self._id = Sensor._num_sensors
 
     @classmethod
     def create(cls, sensor_type: SpectrumType, location: int):
@@ -35,8 +37,8 @@ class Sensor:
         return self._sensor_type
 
     @property
-    def guid(self):
-        return self._guid.hex
+    def id(self):
+        return self._id
 
     def read(self, container: Container, mode: str, sampling_frequency: int):
         if container is None:
@@ -52,8 +54,8 @@ class Sensor:
             signal_average_power_db = 10 * np.log10(signal_average_power + EPSILON_POWER)
             noise_average_power_db = signal_average_power_db - SAMPLING_FREQUENCY_TO_SNR_DB[sampling_frequency]
             noise_average_power = 10 ** (noise_average_power_db / 10)
-            noise = np.random.normal(NOISE_MU_VALUE, np.sqrt(noise_average_power), raw_output.size)
-            return raw_output + noise
+            noise = np.absolute(np.random.normal(NOISE_MU_VALUE, np.sqrt(noise_average_power), raw_output.size))
+            return (raw_output + noise).rename("unknown_plastic")
         else:
             raise ValueError(f'Invalid reading mode,\n'
                              f'valid options: {[mode.value for mode in SimulationMode]}')

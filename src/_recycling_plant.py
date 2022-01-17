@@ -82,7 +82,7 @@ class RecyclingPlant:
         for sensor in self._sensors:
             sensors_output.update(
                 {
-                    sensor.guid: {
+                    sensor.id: {
                         'type': sensor.type,
                         'location': sensor.location,
                         'spectrum': sensor.read(None, self._mode, sensors_frequency_hz),
@@ -100,7 +100,7 @@ class RecyclingPlant:
                 if self._is_visible_to_sensor(sensor, container):
                     sensors_output.update(
                         {
-                            sensor.guid: {
+                            sensor.id: {
                                 'type': sensor.type,
                                 'location': sensor.location,
                                 'spectrum': sensor.read(container, self._mode, sensors_frequency_hz),
@@ -109,7 +109,7 @@ class RecyclingPlant:
                     )
                     sensed_containers.update(
                         {
-                            sensor.guid: container
+                            sensor.id: container
                         }
                     )
 
@@ -121,13 +121,13 @@ class RecyclingPlant:
             identification_output = self._user_sorting_function(sensors_output)
 
         if identification_output is not None:
-            for sensor_guid, plastic_type in identification_output.items():
-                if sensor_guid in sensed_containers.keys():
-                    if sensed_containers[sensor_guid].plastic_type == plastic_type:
+            for sensor_id, plastic_type in identification_output.items():
+                if sensor_id in sensed_containers.keys():
+                    if sensed_containers[sensor_id].plastic_type == plastic_type:
                         classified += 1
                     else:
                         mistyped += 1
-                    self._containers_list.remove(sensed_containers[sensor_guid])
+                    self._containers_list.remove(sensed_containers[sensor_id])
 
         is_done = self._num_remaining_containers == 0 and len(self._containers_list) == 0
         return missed, classified, mistyped, is_done
