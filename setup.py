@@ -2,12 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='rcplant',
-    version='0.9.50',
+    version='1.0.0',
     url='',
     license='',
     author='Mohammadreza Rostam, Rongxuan Du',
     author_email='reza.rostam@mech.ubc.ca',
     description='Recycling Plant Simulator',
+    long_description_content_type='text/markdown',
+    long_description=open('README.md').read(),
     classifiers=[
         "Development Status :: 4 - Beta",
         "License :: Free for non-commercial use",
