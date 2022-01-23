@@ -1,4 +1,7 @@
-src/__pycache__
 .idea
-src/data/archive
 .DS_Store
+build/
+dist/
+rcplant.egg-info/
+rcplant/__pycache__/
+rcplant/data/archive/

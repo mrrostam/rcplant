@@ -1,7 +1,5 @@
 # Recycling Plant Simulator Package
 
-This project is structured as a standalone package so that it can easily be installed using `pip`. However, it's not released anywhere yet.
-
 ## Setup
 
 Install dependencies:

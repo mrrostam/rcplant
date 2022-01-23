@@ -1,6 +1,6 @@
 import random
 
-from src import *  # This import should be replaced with `import rcplant`
+from rcplant import *  # using the pip package
 
 
 def user_sorting_function(sensors_output):

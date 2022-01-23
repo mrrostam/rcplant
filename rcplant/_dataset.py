@@ -27,7 +27,7 @@ class Dataset(object):
 class FTIR(Dataset):
     def __init__(self):
         data_folder = os.path.join(os.path.dirname(__file__), 'data')
-        data_file = os.path.join(data_folder, 'FTIR', 'FTIR Plastic Database.xlsx')
+        data_file = os.path.join(data_folder, 'FTIR Plastic Database.xlsx')
         self._data_table = pd.read_excel(data_file, sheet_name=0, index_col=0)
         # it's assumed that the background spectrum is all zeros for now, should be replaced with the actual data
         self._background = self._data_table.loc['background']
@@ -46,7 +46,7 @@ class FTIR(Dataset):
 class Raman(Dataset):
     def __init__(self):
         data_folder = os.path.join(os.path.dirname(__file__), 'data')
-        data_file = os.path.join(data_folder, 'Raman', 'Raman Plastic Database.xlsx')
+        data_file = os.path.join(data_folder, 'Raman Plastic Database.xlsx')
         self._data_table = pd.read_excel(data_file, sheet_name=0, index_col=0)
         # it's assumed that the background spectrum is all zeros for now, should be replaced with the actual data
         self._background = self._data_table.loc['background']

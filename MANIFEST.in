@@ -1,2 +1,2 @@
-recursive-include src *
-recursive-include src/data *
+recursive-include rcplant *
+recursive-include rcplant/data *
