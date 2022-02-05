@@ -21,5 +21,5 @@ setup(
     include_package_data=True,
     package_data={'rcplant/data': ['rcplant/data/*.xlsx']},
     python_requires='>=3.8',
-    install_requires=["matplotlib>=3.3.3", "pandas>=1.3.4", "openpyxl>=3.0.9", "numpy>=1.21.5"]
+    install_requires=["pandas>=1.3.4", "openpyxl>=3.0.9", "numpy>=1.21.5"]
 )
