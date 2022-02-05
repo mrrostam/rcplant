@@ -8,7 +8,7 @@ The following code is an example of how to use this package:
 ```python
 import random
 
-from rcplant import * 
+from rcplant import *
 
 
 def user_sorting_function(sensors_output):
@@ -49,6 +49,10 @@ def main():
     elapsed_time = simulator.run()
 
     print(f'\nResults for running the simulation in "{simulation_mode}" mode:')
+
+    for item_id, result in simulator.identification_result.items():
+        print(result)
+
     print(f'Total missed containers = {simulator.total_missed}')
     print(f'Total sorted containers = {simulator.total_classified}')
     print(f'Total mistyped containers = {simulator.total_mistyped}')
@@ -58,6 +62,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 ```
 
 You may modify the [`user_sorting_function`](src/main.py) function and implement new logic for sorting plastic containers.

@@ -42,8 +42,8 @@ def main():
 
     print(f'\nResults for running the simulation in "{simulation_mode}" mode:')
 
-    for item in simulator.identification_result.items():
-        print(item)
+    for item_id, result in simulator.identification_result.items():
+        print(result)
 
     print(f'Total missed containers = {simulator.total_missed}')
     print(f'Total sorted containers = {simulator.total_classified}')
