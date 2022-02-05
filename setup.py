@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='rcplant',
-    version='1.1.0',
+    version='1.1.1',
     url='',
     license='',
     author='Mohammadreza Rostam, Rongxuan Du',
@@ -11,7 +11,7 @@ setup(
     long_description_content_type='text/markdown',
     long_description=open('README.md').read(),
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "License :: Free for non-commercial use",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.8",

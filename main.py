@@ -18,13 +18,11 @@ def main():
     conveyor_speed = 10  # cm per second
     num_containers = 100
     sensing_zone_location_1 = 500  # cm
-    sensing_zone_location_2 = 600  # cm
     sensors_sampling_frequency = 1  # Hz
     simulation_mode = 'training'
 
     sensors = [
         Sensor.create(SpectrumType.FTIR, sensing_zone_location_1),
-        Sensor.create(SpectrumType.Raman, sensing_zone_location_2),
     ]
 
     conveyor = Conveyor.create(conveyor_speed, conveyor_length, conveyor_width)
