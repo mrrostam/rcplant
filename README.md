@@ -1,4 +1,4 @@
-# Recycling Plant Simulator Package
+# McMaster Recycling Plant Simulator Package
 
 
 ## Quick start
