@@ -1,6 +1,6 @@
 import random
 
-from rcplant import *  # using the pip package
+from rcplant import *
 
 
 def user_sorting_function(sensors_output):
@@ -41,6 +41,10 @@ def main():
     elapsed_time = simulator.run()
 
     print(f'\nResults for running the simulation in "{simulation_mode}" mode:')
+
+    for item in simulator.identification_result.items():
+        print(item)
+
     print(f'Total missed containers = {simulator.total_missed}')
     print(f'Total sorted containers = {simulator.total_classified}')
     print(f'Total mistyped containers = {simulator.total_mistyped}')
