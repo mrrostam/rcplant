@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='rcplant',
-    version='1.0.2',
+    version='1.1.0',
     url='',
     license='',
     author='Mohammadreza Rostam, Rongxuan Du',

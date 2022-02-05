@@ -230,6 +230,7 @@ class Plastic(enum.Enum):
     Polyester = 'Polyester'
     PET = 'PET'
     PU = 'PU'
+    Blank = 'background'
 ```
 
 An enum for all types of plastics

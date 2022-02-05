@@ -51,7 +51,7 @@ class RecyclingPlant:
                 random.randint(MIN_CONTAINERS_GAP, MAX_CONTAINERS_GAP):
             self._containers_list.append(
                 Container(
-                    random.choice(list(Plastic)),
+                    random.choice(list(Plastic)[0:-1]),  # Added - not generate containers with blank spectrum
                     ContainerDimension(
                         random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
                         random.randint(MIN_CONTAINER_SIZE, MAX_CONTAINER_SIZE),
@@ -123,20 +123,21 @@ class RecyclingPlant:
 
         if identification_output is not None:
             for sensor_id, plastic_type in identification_output.items():
-                if sensor_id in sensed_containers.keys():
-                    identification_result.update(
-                        {
-                            sensed_containers[sensor_id].guid: {
-                                'actual_type': sensed_containers[sensor_id].plastic_type.value,
-                                'identified_type': plastic_type.value,
+                if plastic_type != Plastic.Blank:  # Only if it's not background, then compare
+                    if sensor_id in sensed_containers.keys():
+                        identification_result.update(
+                            {
+                                sensed_containers[sensor_id].guid: {
+                                    'actual_type': sensed_containers[sensor_id].plastic_type.value,
+                                    'identified_type': plastic_type.value,
+                                }
                             }
-                        }
-                    )
-                    if sensed_containers[sensor_id].plastic_type == plastic_type:
-                        classified += 1
-                    else:
-                        mistyped += 1
-                    self._containers_list.remove(sensed_containers[sensor_id])
+                        )
+                        if sensed_containers[sensor_id].plastic_type == plastic_type:
+                            classified += 1
+                        else:
+                            mistyped += 1
+                        self._containers_list.remove(sensed_containers[sensor_id])
 
         is_done = self._num_remaining_containers == 0 and len(self._containers_list) == 0
         return missed, classified, mistyped, identification_result, is_done

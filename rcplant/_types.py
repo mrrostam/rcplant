@@ -16,6 +16,7 @@ class Plastic(enum.Enum):
     Polyester = 'Polyester'
     PET = 'PET'
     PU = 'PU'
+    Blank = 'background'
 
 
 class SimulationMode(enum.Enum):
