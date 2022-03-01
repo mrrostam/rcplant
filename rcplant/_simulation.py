@@ -39,6 +39,8 @@ class RPSimulation:
         self._identification_result = {}
 
         self._init_recycling_plant()
+        # to start from 1 for the next simulation
+        Sensor.reset_num()
 
     def _init_recycling_plant(self):
         self._recycling_plant = RecyclingPlant(
@@ -88,6 +90,7 @@ class RPSimulation:
         return is_done
 
     def run(self):
+        self.reset()
         while not self._update():
             pass
         return self._current_iteration * (1 / self._simulation_frequency_hz)

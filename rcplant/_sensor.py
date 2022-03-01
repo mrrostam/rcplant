@@ -12,21 +12,30 @@ from ._types import SpectrumType
 class Sensor:
     _num_sensors = 0
 
-    def __init__(self, sensor_type: SpectrumType, location_cm: int):
+    def __init__(self, sensor_type: SpectrumType, location_cm: int, sensor_id: int = None):
         if location_cm < 0:
             raise ValueError(f'Sensor location should be >= 0.')
         if not isinstance(sensor_type, SpectrumType):
             raise ValueError(f'Invalid type of sensor: {SpectrumType} \n '
                              f'Supported sensors types: {[e.value for e in SpectrumType]}')
-        Sensor._num_sensors += 1
+
         self._location_cm = location_cm
         self._sensor_type = sensor_type
         self._background_spectrum = DATA_SETS[self._sensor_type].background
-        self._id = Sensor._num_sensors
+
+        if sensor_id is None:
+            Sensor._num_sensors += 1
+            self._id = Sensor._num_sensors
+        else:
+            self._id = sensor_id
 
     @classmethod
-    def create(cls, sensor_type: SpectrumType, location: int):
-        return Sensor(sensor_type, location)
+    def reset_num(cls):
+        cls._num_sensors = 0
+
+    @classmethod
+    def create(cls, sensor_type: SpectrumType, location: int, sensor_id: int = None):
+        return Sensor(sensor_type, location, sensor_id)
 
     @property
     def location(self):

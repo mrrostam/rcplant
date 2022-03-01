@@ -118,7 +118,7 @@ A function to run the simulation.
 
 ```python
 class Sensor:
-    def __init__(self, sensor_type: SpectrumType, location_cm: int)
+    def __init__(self, sensor_type: SpectrumType, location_cm: int, sensor_id: int = None)
 ```
 
 A class to define a new sensor.
@@ -127,13 +127,14 @@ A class to define a new sensor.
 
 - location_cm : Location of the sensor [centimeter].
 - sensor_type : Type of the sensor [[SpectrumType](#spectrumtype)].
-
+- sensor_id : Sensor ID, which is used in [sorting_function](#sorting_function) to identify each sensor. 
+If no ID is provided, an ID will be generated based on the number of sensors.
 ---
 
 #### Sensor.`create`
 
 ```python
-def create(cls, sensor_type: SpectrumType, location: int)
+def create(cls, sensor_type: SpectrumType, location: int, sensor_id: int = None)
 ```
 
 A factory method to create a new [sensor](#sensor).
@@ -142,9 +143,21 @@ A factory method to create a new [sensor](#sensor).
 
 - location : Location of the sensor [centimeter].
 - sensor_type : Type of the sensor [[SpectrumType](#spectrumtype)].
+- sensor_id : Sensor ID, which is used in [sorting_function](#sorting_function) to identify each sensor. 
+If no ID is provided, an ID will be generated based on the number of sensors.
 
 ##### Returns
 - A [sensor](#sensor) object.
+
+---
+
+#### Sensor.`reset_num`
+
+```python
+def reset_num(cls)
+```
+
+A class method to reset the number of created sensors. This would be helpful if you also want to reset IDs assigned to newly created sensors.
 
 ---
 
