@@ -39,6 +39,7 @@ class RPSimulation:
         self._identification_result = {}
 
         self._init_recycling_plant()
+        
         # to start from 1 for the next simulation
         Sensor.reset_num()
 

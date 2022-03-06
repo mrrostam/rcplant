@@ -161,6 +161,16 @@ A class method to reset the number of created sensors. This would be helpful if 
 
 ---
 
+#### Sensor.`id`
+
+```python
+@property
+def id(self)
+```
+
+Returns Sensor's ID.
+
+---
 #### Conveyor
 
 ```python
@@ -256,4 +266,4 @@ class SpectrumType(enum.Enum):
     Raman = 'Raman'
 ```
 
-An enum for all types of sensorss
+An enum for all types of sensors
