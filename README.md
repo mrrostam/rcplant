@@ -1,5 +1,6 @@
 # McMaster Recycling Plant Simulator Package
 
+[![Downloads](https://pepy.tech/badge/rcplant)](https://pepy.tech/project/rcplant)
 
 ## Quick start
 
