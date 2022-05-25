@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='rcplant',
-    version='1.1.2',
+    version='1.1.3',
     url='',
     license='',
     author='Mohammadreza Rostam, Rongxuan Du',
@@ -20,6 +20,6 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     package_data={'rcplant/data': ['rcplant/data/*.xlsx']},
-    python_requires='>=3.8',
+    python_requires='>=3.7',
     install_requires=["pandas>=1.3.4", "openpyxl>=3.0.9", "numpy>=1.21.5"]
 )
