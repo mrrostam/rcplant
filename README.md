@@ -1,4 +1,4 @@
-# McMaster Recycling Plant Simulator Package
+# Recycling Plant Simulator Package
 
 [![PyPi version](https://badgen.net/pypi/v/rcplant/)](https://pypi.org/project/rcplant/)
 [![Downloads](https://pepy.tech/badge/rcplant)](https://pepy.tech/project/rcplant)
